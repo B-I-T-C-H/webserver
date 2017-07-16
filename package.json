@@ -18,6 +18,8 @@
     "express-ejs-layouts": "^2.3.0",
     "express-session": "^1.15.3",
     "express-validator": "^3.2.1",
-    "mongoose": "^4.11.3"
+    "mongoose": "^4.11.3",
+    "natural": "^0.5.4",
+    "snoowrap": "^1.14.1"
   }
 }

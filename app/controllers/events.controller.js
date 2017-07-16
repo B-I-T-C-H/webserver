@@ -62,7 +62,7 @@ function showCreate(req, res){
 function processCreate(req, res){
 	// validate information
 	req.checkBody('name', 'Name is required.').notEmpty()
-	req.checkBody('description', 'Description is required.').notEmpty()
+	//req.checkBody('description', 'Description is required.').notEmpty()
 
 	// if there are errors, redirect and save errors to flash
 	const errors = req.validationErrors()
@@ -71,10 +71,19 @@ function processCreate(req, res){
 		return res.redirect('/events/create')
 	}
 
+	// Snoowrap API credentials for Reddit API
+	const r = new snoowrap({
+	  userAgent: process.env.userAgent,
+	  clientId: process.env.clientId,
+	  clientSecret: process.env.clientSecret,
+	  username: process.env.username,
+	  password: process.env.password
+	});
+
 	// create a new event
 	const event = new Event({
 		name: req.body.name,
-		description: req.body.description
+		description: "hi"
 	})
 
 	// save event

@@ -1,4 +1,5 @@
 const Event = require('../models/event')
+var snoowrap = require('snoowrap')
 
 module.exports = {
 	showEvents: showEvents,
@@ -71,7 +72,7 @@ function processCreate(req, res){
 		return res.redirect('/events/create')
 	}
 
-	// Snoowrap API credentials for Reddit API
+	// Snoowrap API credentials, loads from DEV-API-CRED
 	const r = new snoowrap({
 	  userAgent: process.env.userAgent,
 	  clientId: process.env.clientId,
@@ -79,6 +80,10 @@ function processCreate(req, res){
 	  username: process.env.username,
 	  password: process.env.password
 	});
+
+	// r.getUser(req.body.name).getComments().then(function(value){
+
+	// })
 
 	// create a new event
 	const event = new Event({

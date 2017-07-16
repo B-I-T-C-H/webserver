@@ -1,9 +1,13 @@
-# node-crud
+# webserver
 
-This contains code from the tutorial from scotch.io [here](https://scotch.io/courses/create-a-crud-app-with-node-and-mongodb/).
+To use, git clone this repository and cd into the folder, and type:
+```
+npm install
+```
+You will need to set up information in the .env file, which is included in our Dropbox folder. Make sure to add your own Reddit username and password.
 
-Scotch.io makes you pay to see the videos after tutorial 11 but their download link works, so you'll have to download the videos instead of streaming them.
-
-Just in case, I also downloaded all of the videos which you can see in our shared dropbox folder that Ritz made.
-
-These tutorials are really <i>really</i> good...
+To run, type:
+```
+node server.js
+```
+Although it's a better idea to use nodemon.

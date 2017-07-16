@@ -6,10 +6,12 @@ npm install
 ```
 You will need to set up information in the `.env` file, which is included in our Dropbox folder. Make sure to add your own Reddit username and password.
 
+After you fill in information on the `.env` file, copy and paste it into the newly cloned folder.
+
+Also the `.env` file is a hidden file, so make sure you look for that.
+
 To run, type:
 ```
 node server.js
 ```
 Although it's a better idea to use nodemon.
-
-Also the `.env` file is a hidden file, so make sure you look for that.

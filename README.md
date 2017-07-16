@@ -14,4 +14,9 @@ To run, type:
 ```
 node server.js
 ```
-Although it's a better idea to use nodemon.
+Although it's a better idea to use nodemon, so given that nodemon is already installed, type:
+
+```
+nodemon server.js
+```
+After that, you should be able to see the app from `localhost:8080`

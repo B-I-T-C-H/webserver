@@ -21,6 +21,7 @@
     "mongoose": "^4.11.3",
     "natural": "^0.5.4",
     "promise": "^8.0.1",
+    "rerequest": "^0.2.1",
     "snoowrap": "^1.14.1"
   }
 }

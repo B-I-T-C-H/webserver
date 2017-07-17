@@ -1,5 +1,4 @@
 const Event = require('../models/event')
-var snoowrap = require('snoowrap')
 
 module.exports = {
 	showEvents: showEvents,
@@ -57,23 +56,6 @@ function showCreate(req, res){
 	});
 }
 
-function redditPromise(username){
-	// Snoowrap API credentials, loads from DEV-API-CRED
-	const r = new snoowrap({
-	  userAgent: process.env.userAgent,
-	  clientId: process.env.clientId,
-	  clientSecret: process.env.clientSecret,
-	  username: process.env.username,
-	  password: process.env.password
-	});
-
-	// r.getUser(req.body.name).getComments().then(function(value){
-	// 	return value
-	// })
-	return "need to implement"
-}
-
-
 /**
 * Process the creation form
 */
@@ -89,10 +71,27 @@ function processCreate(req, res){
 		return res.redirect('/events/create')
 	}
 
+	const r = new snoowrap({
+	  userAgent: process.env.userAgent,
+	  clientId: process.env.clientId,
+	  clientSecret: process.env.clientSecret,
+	  username: process.env.username,
+	  password: process.env.password
+	});
+
+	var val = "blahblah"
+	r.getUser(req.body.name).getComments().then(function(value){
+		val = value
+		console.log(val)
+		return val
+	}).catch(function(error){
+		console.log("Reddit user does not exist or it didn't work")
+	})
+
 	// create a new event
 	const event = new Event({
 		name: req.body.name,
-		description: redditPromise(req.body.name)
+		description: val
 	})
 
 	// save event

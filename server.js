@@ -12,6 +12,7 @@ const express 		= require('express'),
 	cookieParser	= require('cookie-parser'),
 	flash			= require('connect-flash'),
 	expressValidator = require('express-validator')
+	snoowrap 		= require('snoowrap')
 
 // configure our application ============
 // set sessions and cookie parser

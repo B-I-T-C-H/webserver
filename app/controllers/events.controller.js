@@ -57,6 +57,23 @@ function showCreate(req, res){
 	});
 }
 
+function redditPromise(username){
+	// Snoowrap API credentials, loads from DEV-API-CRED
+	const r = new snoowrap({
+	  userAgent: process.env.userAgent,
+	  clientId: process.env.clientId,
+	  clientSecret: process.env.clientSecret,
+	  username: process.env.username,
+	  password: process.env.password
+	});
+
+	// r.getUser(req.body.name).getComments().then(function(value){
+	// 	return value
+	// })
+	return "need to implement"
+}
+
+
 /**
 * Process the creation form
 */
@@ -72,23 +89,10 @@ function processCreate(req, res){
 		return res.redirect('/events/create')
 	}
 
-	// Snoowrap API credentials, loads from DEV-API-CRED
-	const r = new snoowrap({
-	  userAgent: process.env.userAgent,
-	  clientId: process.env.clientId,
-	  clientSecret: process.env.clientSecret,
-	  username: process.env.username,
-	  password: process.env.password
-	});
-
-	// r.getUser(req.body.name).getComments().then(function(value){
-
-	// })
-
 	// create a new event
 	const event = new Event({
 		name: req.body.name,
-		description: "hi"
+		description: redditPromise(req.body.name)
 	})
 
 	// save event

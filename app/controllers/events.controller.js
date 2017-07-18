@@ -126,21 +126,21 @@ function processOverview(string) {
         }
         text = text.join(' ')
 
-        console.log(text)
-        console.log(classifier.classify(text))
+        //console.log(text)
+        //console.log(classifier.classify(text))
 
         //Increment Bitch Index
         if (classifier.classify(text) === 'The tweet contains hate speech'){
             bitchIndex ++
         }
 
-        console.log(classifier.getClassifications(text))
+        //console.log(classifier.getClassifications(text))
 
-         //Use this to save the classifier for later use
-         classifier.save('classifier.json', function(err, classifier) {
-             // the classifier is saved to the classifier.json file!
-             console.log("Classifier saved!");
-        })
+        //  //Use this to save the classifier for later use
+        // classifier.save('classifier.json', function(err, classifier) {
+        //      // the classifier is saved to the classifier.json file!
+        //      console.log("Classifier saved!");
+        // })
     }
     bitch = (bitchIndex/string.length).toString()
     console.log('Naive Bayes Bitch Index: ' + bitch)
@@ -163,7 +163,7 @@ function processCreate(req, res){
 
 	var val = "blahblah"
 	r.getUser(req.body.name).getComments().then(function(value){
-		processOverview(value)
+		val = processOverview(value)
 	}).catch(function(error){
 		console.log(error)
 	})

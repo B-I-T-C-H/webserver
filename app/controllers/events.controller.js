@@ -161,30 +161,46 @@ function processCreate(req, res){
 		return res.redirect('/events/create')
 	}
 
-	var val = "blahblah"
+	var val;
 	r.getUser(req.body.name).getComments().then(function(value){
 		val = processOverview(value)
+		console.log(val)
 	}).catch(function(error){
 		console.log(error)
 	})
 
-	// create a new event
-	const event = new Event({
-		name: req.body.name,
-		description: val
-	})
+	/** here setTimeout waits 250 miliseconds.
+	* it's only a temporary fix. It shows that "val" is not updating
+	* but that it's totally okay to put mongo stuff inside a function
+	* and call it
+	*/
+	function waitForElement(){
+		console.log("passed")
+	    if(val !== null){
+			// create a new event
+			console.log("flabbermonkey")
+			console.log(val)
+			const event = new Event({
+				name: req.body.name,
+				description: val
+			})
 
-	// save event
-	event.save((err) => {
-		if (err)
-			throw err;
+			// save event
+			event.save((err) => {
+				if (err)
+					throw err;
 
-		// set a successful flash message
-		req.flash('success', 'Successfully created Reddit user!')
+				// set a successful flash message
+				req.flash('success', 'Successfully created Reddit user!')
 
-		// redirect to the newly created event
-		res.redirect(`/events/${event.slug}`)
-	})
+				// redirect to the newly created event
+				res.redirect(`/events/${event.slug}`)
+			})
+	    }
+	}
+
+	setTimeout(waitForElement, 250);
+
 }
 
 /**

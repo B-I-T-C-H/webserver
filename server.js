@@ -11,7 +11,7 @@ const express 		= require('express'),
 	session			= require('express-session'),
 	cookieParser	= require('cookie-parser'),
 	flash			= require('connect-flash'),
-	expressValidator = require('express-validator')
+	expressValidator = require('express-validator'),
 	snoowrap 		= require('snoowrap')
 
 // configure our application ============

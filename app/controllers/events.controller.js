@@ -1,5 +1,8 @@
 const Event = require('../models/event')
 var snoowrap 		= require('snoowrap')
+var natural = require('natural')
+var fs = require('fs');
+var parse = require('csv-parse');
 
 module.exports = {
 	showEvents: showEvents,
@@ -9,6 +12,40 @@ module.exports = {
 	showEdit: showEdit,
 	processEdit: processEdit,
 	deleteEvent: deleteEvent
+}
+
+/**
+* NLP stuff here
+*/
+
+var classifier = new natural.BayesClassifier();
+var input = fs.readFileSync('twitter-hate.csv', 'utf8');
+
+//Loads a classifier as saved.
+natural.BayesClassifier.load('classifier.json', null, function(err, classifierLoad) {
+    if (classifierLoad != undefined) {
+        classifier = classifierLoad;
+        
+        console.log("on pause")
+    }
+    else { trainData(); }
+});
+
+function trainData() {
+    parse(input, {comment: '#'}, function(err, output){
+        console.log("Loading files");
+        for (i = 1; i < 14500; i++) {
+            if (i % 1000 == 0) { console.log(i); }
+
+            classifier.addDocument(String(output[i][19]), String(output[i][5]));
+        }
+
+        console.log("Training files");
+        classifier.train();
+        console.log("Finished training");
+        
+        console.log("on pause")
+    });
 }
 
 /**
@@ -65,13 +102,49 @@ const r = new snoowrap({
 	password : process.env.password
 });
 
-function getClassification(value){
-	var comments = []
-	for (i = 0; i < string.length; i++){
-		comments.push(string[i]['body'])
-		console.log(string[i]['body'])
-	}
-	return comments
+function processOverview(string) {
+    var comments = []
+    for (i = 0; i < string.length; i++){
+        comments.push(string[i]['body'])
+    }
+
+    var text = ''
+    var bitchIndex = 0
+
+    for (i = 0; i < comments.length; i++){
+        text = String(comments[i]).substring(0,1000)
+
+        /* If a user quotes someone who is using hate speech, they are not
+         penalized for hate speech. Currently fails the edge case of
+         multiple paragraphs in one quote. Quotation notation in Reddit is
+         '>' */
+        text = text.split('\n')
+        for (j = 0; j < text.length; j++){
+            if (text[j][0] === '>'){
+                text[j] = ''
+            }
+        }
+        text = text.join(' ')
+
+        console.log(text)
+        console.log(classifier.classify(text))
+
+        //Increment Bitch Index
+        if (classifier.classify(text) === 'The tweet contains hate speech'){
+            bitchIndex ++
+        }
+
+        console.log(classifier.getClassifications(text))
+
+         //Use this to save the classifier for later use
+         classifier.save('classifier.json', function(err, classifier) {
+             // the classifier is saved to the classifier.json file!
+             console.log("Classifier saved!");
+        })
+    }
+    bitch = (bitchIndex/string.length).toString()
+    console.log('Naive Bayes Bitch Index: ' + bitch)
+    return bitch
 }
 /**
 * Process the creation form
@@ -90,7 +163,7 @@ function processCreate(req, res){
 
 	var val = "blahblah"
 	r.getUser(req.body.name).getComments().then(function(value){
-		console.log(value)
+		processOverview(value)
 	}).catch(function(error){
 		console.log(error)
 	})

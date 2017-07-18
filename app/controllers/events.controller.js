@@ -1,5 +1,5 @@
 const Event = require('../models/event')
-var snoowrap 		= require('snoowrap')
+var snoowrap = require('snoowrap')
 var natural = require('natural')
 var fs = require('fs');
 var parse = require('csv-parse');
@@ -17,7 +17,6 @@ module.exports = {
 /**
 * NLP stuff here
 */
-
 var classifier = new natural.BayesClassifier();
 var input = fs.readFileSync('twitter-hate.csv', 'utf8');
 
@@ -25,8 +24,6 @@ var input = fs.readFileSync('twitter-hate.csv', 'utf8');
 natural.BayesClassifier.load('classifier.json', null, function(err, classifierLoad) {
     if (classifierLoad != undefined) {
         classifier = classifierLoad;
-        
-        console.log("on pause")
     }
     else { trainData(); }
 });
@@ -43,8 +40,6 @@ function trainData() {
         console.log("Training files");
         classifier.train();
         console.log("Finished training");
-        
-        console.log("on pause")
     });
 }
 
@@ -126,9 +121,6 @@ function processOverview(string) {
         }
         text = text.join(' ')
 
-        //console.log(text)
-        //console.log(classifier.classify(text))
-
         //Increment Bitch Index
         if (classifier.classify(text) === 'The tweet contains hate speech'){
             bitchIndex ++
@@ -164,7 +156,7 @@ function processCreate(req, res){
 	var val = null
 	r.getUser(req.body.name).getComments().then(function(value){
 		val = processOverview(value)
-		
+
 		// create a new event
 		const event = new Event({
 			name: req.body.name,

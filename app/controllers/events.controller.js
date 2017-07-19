@@ -157,6 +157,10 @@ function processCreate(req, res){
 	r.getUser(req.body.name).getComments().fetchMore({amount:100}).then(function(value){
 		val = processOverview(value)
 
+		// first removes name from database, then updates
+		Event.remove({ slug: req.body.name }, (err) => {
+		})
+
 		// create a new event
 		const event = new Event({
 			name: req.body.name,
@@ -169,7 +173,7 @@ function processCreate(req, res){
 				throw err;
 
 			// set a successful flash message
-			req.flash('success', 'Successfully created Reddit user!')
+			req.flash('success', 'Successfully updated BITCH for ' + req.body.name + "!")
 
 			// redirect to the newly created event
 			res.redirect(`/events/${event.slug}`)

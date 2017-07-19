@@ -154,7 +154,7 @@ function processCreate(req, res){
 	}
 
 	var val = null
-	r.getUser(req.body.name).getComments().then(function(value){
+	r.getUser(req.body.name).getComments().fetchMore({amount:100}).then(function(value){
 		val = processOverview(value)
 
 		// create a new event

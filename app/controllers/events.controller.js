@@ -162,10 +162,9 @@ function processCreate(req, res){
 
 		// first removes name from database, then updates
 		Event.remove({ slug: username }, (err) => {
-			console.log("removed slug!")
 			// create a new event
 			const event = new Event({
-				name: username,
+				name: req.body.name,
 				description: val
 			})
 

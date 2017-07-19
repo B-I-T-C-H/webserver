@@ -1,8 +1,8 @@
-const Event = require('../models/event')
-var snoowrap = require('snoowrap')
-var natural = require('natural')
-var fs = require('fs');
-var parse = require('csv-parse');
+const Event 		= require('../models/event'),
+	  snoowrap		= require('snoowrap'),
+	  natural 		= require('natural'),
+	  fs 			= require('fs'),
+ 	  parse 		= require('csv-parse')
 
 module.exports = {
 	showEvents: showEvents,
@@ -154,7 +154,7 @@ function processCreate(req, res){
 	}
 
 	var val = null
-	r.getUser(req.body.name).getComments().then(function(value){
+	r.getUser(req.body.name).getComments().fetchMore({amount:100}).then(function(value){
 		val = processOverview(value)
 
 		// create a new event
@@ -176,7 +176,8 @@ function processCreate(req, res){
 		})
 
 	}).catch(function(error){
-		console.log(error)
+		console.log("Reddit user is not found!")
+		res.redirect('/events/create')
 	})
 }
 

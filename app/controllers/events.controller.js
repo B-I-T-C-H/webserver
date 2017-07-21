@@ -153,26 +153,33 @@ function processCreate(req, res){
 		return res.redirect('/events/create')
 	}
 
+//.fetchMore({amount:100})
 	var val = null
 	r.getUser(req.body.name).getComments().fetchMore({amount:100}).then(function(value){
 		val = processOverview(value)
 
-		// create a new event
-		const event = new Event({
-			name: req.body.name,
-			description: val
-		})
+		username = req.body.name.toLowerCase()
 
-		// save event
-		event.save((err) => {
-			if (err)
-				throw err;
+		// first removes name from database, then updates
+		Event.remove({ slug: username }, (err) => {
+			// create a new event
+			const event = new Event({
+				name: req.body.name,
+				description: val
+			})
 
-			// set a successful flash message
-			req.flash('success', 'Successfully created Reddit user!')
+			// save event
+			event.save((err) => {
+				if (err)
+					throw err;
 
-			// redirect to the newly created event
-			res.redirect(`/events/${event.slug}`)
+				// set a successful flash message
+				req.flash('success', 'Successfully updated BITCH for ' + req.body.name + "!")
+
+				// redirect to the newly created event
+				res.redirect(`/events/${event.slug}`)
+			})
+
 		})
 
 	}).catch(function(error){
